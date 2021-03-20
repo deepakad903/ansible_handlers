@@ -1,0 +1,25 @@
+- hosts: tag_Name_webserver
+  tasks: 
+  - package:
+          name : "httpd"
+          state : "present"
+  - file:
+          state: touch 
+          path: "/etc/httpd/conf.d/test.conf" 
+  - copy:
+          src: "/root/httpd.conf"
+          dest: "/etc/httpd/conf.d/test.conf"
+    notify: "httpd_handler"
+  - file:
+          state: directory
+          path: "/var/www/test/"
+  - copy:
+          content: "hiii my name is deepak"
+          dest: "/var/www/test/dkp.txt"
+  handlers:
+  - name: httpd_handler
+    service:
+            name: httpd
+            state: restarted
+
+
